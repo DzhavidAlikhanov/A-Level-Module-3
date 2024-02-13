@@ -1,32 +1,25 @@
 package org.example.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
-import java.util.Date; // Добавим импорт для класса Date
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "operations")
 public class Operation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String operationType;
-    private double amount;
-
-    @Enumerated(EnumType.STRING)
-    private Category category;
-
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
+    private String name;
+    @Enumerated(EnumType.STRING)
+    private Category category;
+    private double amount;
+    private LocalDateTime createdAt;
 
-    private Date date;
+    public Operation() {
+    }
 
     public Long getId() {
         return id;
@@ -34,30 +27,6 @@ public class Operation {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getOperationType() {
-        return operationType;
-    }
-
-    public void setOperationType(String operationType) {
-        this.operationType = operationType;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     public Account getAccount() {
@@ -68,11 +37,47 @@ public class Operation {
         this.account = account;
     }
 
-    public Date getDate() {
-        return date;
+    public String getName() {
+        return name;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Operation{"
+                + "id=" + id
+                + ", account=" + account.getId()
+                + ", name='" + name + '\''
+                + ", category=" + category
+                + ", amount=" + amount
+                + ", createdAt=" + createdAt
+                + '}';
     }
 }

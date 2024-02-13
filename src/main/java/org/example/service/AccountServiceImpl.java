@@ -1,37 +1,42 @@
 package org.example.service;
 
+import org.example.dao.AccountDao;
+import org.example.library.Inject;
+import org.example.library.Service;
 import org.example.model.Account;
-import org.example.repository.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.example.model.Operation;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
+    @Inject
+    private AccountDao accountDao;
 
-    private final AccountRepository accountRepository;
-
-    @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    @Override
+    public Account add(Account account) {
+        return accountDao.add(account);
     }
 
     @Override
-    public void createAccount(Account account) {
-        accountRepository.save(account);
+    public void update(Account account) {
+        accountDao.update(account);
     }
 
     @Override
-    public Account getAccountById(Long accountId) {
-        return accountRepository.findById(accountId).orElse(null);
+    public void delete(Account account) {
+        accountDao.delete(account);
     }
 
     @Override
-    public void updateAccount(Account account) {
-        accountRepository.save(account);
+    public Optional<Account> findById(Long id) {
+        return accountDao.findById(id);
     }
 
     @Override
-    public void deleteAccount(Long accountId) {
-        accountRepository.deleteById(accountId);
+    public List<Operation> findOperationsInPeriod(Account account,
+                                                  LocalDate fromDate, LocalDate toDate) {
+        return accountDao.findOperationsInPeriod(account, fromDate, toDate);
     }
 }

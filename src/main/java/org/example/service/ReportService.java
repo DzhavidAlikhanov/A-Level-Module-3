@@ -1,13 +1,13 @@
 package org.example.service;
 
-import java.util.Date;
-import java.util.List;
-import org.example.model.Operation;
-import org.example.model.Account;
+import org.example.model.Report;
+import org.example.model.User;
+
+import java.time.LocalDate;
 
 public interface ReportService {
-    List<Operation> getOperationsInPeriod(Account account, Date fromDate, Date toDate);
 
-    void exportReportToCsv(List<Operation> operations, String filePath);
+    Report generateFinancialReport(User user, LocalDate fromDate, LocalDate toDate);
 
+    void exportReport(Report report, String filePath);
 }

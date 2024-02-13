@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.dao;
 
 import org.example.model.Account;
 import org.example.model.Operation;
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface OperationService {
+public interface OperationDao {
     Operation add(Operation operation);
 
     void update(Operation operation);
@@ -21,4 +21,5 @@ public interface OperationService {
 
     List<Operation> findOperationsByUserAndPeriod(User user,
                                                   LocalDate fromDate, LocalDate toDate);
+
 }

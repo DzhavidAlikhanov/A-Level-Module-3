@@ -1,28 +1,20 @@
 package org.example.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
-import java.util.List;
+import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private String name;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Account> accounts = new ArrayList<>();
 
-    private String username;
-    private String email;
-
-    public String getName() {
-        return username;
+    public User() {
     }
 
     public Long getId() {
@@ -33,27 +25,28 @@ public class User {
         this.id = id;
     }
 
-    public List<Account> getAccounts() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Account> getAccount() {
         return accounts;
     }
 
-    public void setAccounts(List<Account> accounts) {
+    public void setAccount(List<Account> accounts) {
         this.accounts = accounts;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public String toString() {
+        return "User{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", accounts=" + accounts
+                + '}';
     }
 }

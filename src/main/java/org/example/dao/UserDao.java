@@ -1,9 +1,9 @@
-package org.example.service;
+package org.example.dao;
 
 import org.example.model.User;
 import java.util.Optional;
 
-public interface UserService {
+public interface UserDao {
     User add(User user);
 
     void update(User user);
