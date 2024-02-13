@@ -21,12 +21,7 @@ public class Injector {
     }
 
     public static Injector getInstance(String mainPackageName) {
-        if (injectors.containsKey(mainPackageName)) {
-            return injectors.get(mainPackageName);
-        }
-        Injector injector = new Injector(mainPackageName);
-        injectors.put(mainPackageName, injector);
-        return injector;
+        return injectors.computeIfAbsent(mainPackageName, Injector::new);
     }
 
     public Object getInstance(Class<?> certainInterface) {
@@ -54,28 +49,16 @@ public class Injector {
     }
 
     private Class<?> findClassExtendingInterface(Class<?> certainInterface) {
-        for (Class<?> clazz : classes) {
-            Class<?>[] interfaces = clazz.getInterfaces();
-            for (Class<?> singleInterface : interfaces) {
-                if (singleInterface.equals(certainInterface)
-                        && (clazz.isAnnotationPresent(Service.class)
-                        || clazz.isAnnotationPresent(Dao.class))) {
-                    return clazz;
-                }
-            }
-        }
-        throw new RuntimeException("Can't find class which implements "
-                + certainInterface.getName()
-                + " interface and has valid annotation (Dao or Service)");
+        return classes.stream()
+                .filter(clazz -> Arrays.asList(clazz.getInterfaces()).contains(certainInterface))
+                .filter(clazz -> clazz.isAnnotationPresent(Service.class) || clazz.isAnnotationPresent(Dao.class))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Can't find class which implements "
+                        + certainInterface.getName() + " interface and has valid annotation (Dao or Service)"));
     }
 
     private Object getNewInstance(Class<?> certainClass) {
-        if (instanceOfClasses.containsKey(certainClass)) {
-            return instanceOfClasses.get(certainClass);
-        }
-        Object newInstance = createInstance(certainClass);
-        instanceOfClasses.put(certainClass, newInstance);
-        return newInstance;
+        return instanceOfClasses.computeIfAbsent(certainClass, this::createInstance);
     }
 
     private boolean isFieldInitialized(Field field, Object instance) {
@@ -88,14 +71,12 @@ public class Injector {
     }
 
     private Object createInstance(Class<?> clazz) {
-        Object newInstance;
         try {
             Constructor<?> classConstructor = clazz.getConstructor();
-            newInstance = classConstructor.newInstance();
+            return classConstructor.newInstance();
         } catch (Exception e) {
             throw new RuntimeException("Can't create object of the class", e);
         }
-        return newInstance;
     }
 
     private void setValueToField(Field field, Object instanceOfClass, Object classToInject) {

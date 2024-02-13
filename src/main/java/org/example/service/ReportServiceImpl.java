@@ -5,6 +5,9 @@ import org.example.library.Service;
 import org.example.model.Operation;
 import org.example.model.Report;
 import org.example.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,13 +16,14 @@ import java.util.List;
 
 @Service
 public class ReportServiceImpl implements ReportService {
+    private static final Logger logger = LoggerFactory.getLogger(ReportServiceImpl.class);
+
     @Inject
     private OperationService operationService;
 
     @Override
     public Report generateFinancialReport(User user, LocalDate fromDate, LocalDate toDate) {
-        List<Operation> operations = operationService
-                .findOperationsByUserAndPeriod(user, fromDate, toDate);
+        List<Operation> operations = operationService.findOperationsByUserAndPeriod(user, fromDate, toDate);
         return new Report(user, fromDate, toDate, operations);
     }
 
@@ -37,9 +41,10 @@ public class ReportServiceImpl implements ReportService {
                                 operation.getCreatedAt());
             }
 
-            System.out.println("Report exported successfully to: " + filePath);
+            logger.info("Report exported successfully to: {}", filePath);
         } catch (IOException e) {
-            System.out.println("Error exporting report to CSV: " + e.getMessage());
+            logger.error("Error exporting report to CSV", e);
+
         }
     }
 }

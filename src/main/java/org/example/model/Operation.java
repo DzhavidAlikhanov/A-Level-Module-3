@@ -9,13 +9,18 @@ public class Operation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
+
     private String name;
+
     @Enumerated(EnumType.STRING)
     private Category category;
+
     private double amount;
+
     private LocalDateTime createdAt;
 
     public Operation() {
@@ -71,13 +76,13 @@ public class Operation {
 
     @Override
     public String toString() {
-        return "Operation{"
-                + "id=" + id
-                + ", account=" + account.getId()
-                + ", name='" + name + '\''
-                + ", category=" + category
-                + ", amount=" + amount
-                + ", createdAt=" + createdAt
-                + '}';
+        return "Operation{" +
+                "id=" + id +
+                ", account=" + (account != null ? account.getId() : null) +
+                ", name='" + name + '\'' +
+                ", category=" + category +
+                ", amount=" + amount +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

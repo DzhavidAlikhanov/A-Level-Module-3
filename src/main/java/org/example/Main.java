@@ -10,8 +10,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        final Injector injector =
-                Injector.getInstance("org.example");
+        final Injector injector = Injector.getInstance("org.example");
         UserService userService = (UserService) injector.getInstance(UserService.class);
         User user = new User();
         user.setName("Dzhavid Alikhanov");
@@ -20,7 +19,7 @@ public class Main {
         AccountService accountService = (AccountService) injector.getInstance(AccountService.class);
         Account account = new Account();
         account.setName("Savings");
-        account.setBalance(BigDecimal.valueOf(1000));
+        account.setBalance(BigDecimal.valueOf(2000));
         account.setUser(user);
         accountService.add(account);
 
@@ -28,7 +27,7 @@ public class Main {
         Operation incomeOperation = new Operation();
         incomeOperation.setName("Salary");
         incomeOperation.setCategory(Category.INCOME);
-        incomeOperation.setAmount(200);
+        incomeOperation.setAmount(50);
         incomeOperation.setCreatedAt(LocalDateTime.now());
         incomeOperation.setAccount(account);
         operationService.add(incomeOperation);

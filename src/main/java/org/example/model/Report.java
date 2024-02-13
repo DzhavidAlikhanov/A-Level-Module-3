@@ -44,17 +44,17 @@ public class Report {
         return operations;
     }
 
-    public void setOperation(List<Operation> operations) {
+    public void setOperations(List<Operation> operations) {
         this.operations = operations;
     }
 
     @Override
     public String toString() {
-        return "Report{"
-                + "user=" + user
-                + ", fromDate=" + fromDate
-                + ", toDate=" + toDate
-                + ", operations=" + operations
-                + '}';
+        return "Report{" +
+                "user=" + user +
+                ", fromDate=" + fromDate +
+                ", toDate=" + toDate +
+                ", operations=" + operations +
+                '}';
     }
 }
